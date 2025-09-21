@@ -35,22 +35,21 @@ public class FileToArray {
         }
     }
     
-public static double bubbleSort(int[] a) {
-    long start = System.nanoTime();
+    public static double bubbleSort(int[] a) {
+        long start = System.nanoTime();
 
-    int n = a.length;
-    for (int i = n - 1; i >= 1; i--) {
-        for (int j = 0; j < i; j++) {
-            if (a[j] > a[j + 1]) {
-                // swap a[j] and a[j+1]
-                int t = a[j];
-                a[j] = a[j + 1];
-                a[j + 1] = t;
+        int n = a.length;
+        for (int i = n - 1; i >= 1; i--) {
+            for (int j = 0; j < i; j++) {
+                if (a[j] > a[j + 1]) {
+                    // swap a[j] and a[j+1]
+                    int t = a[j];
+                    a[j] = a[j + 1];
+                    a[j + 1] = t;
+                }
             }
         }
+        long end = System.nanoTime();
+        return (end - start) / 1_000_000.0; // return ms
     }
-
-    long end = System.nanoTime();
-    return (end - start) / 1_000_000.0; // return ms
-}
 }
