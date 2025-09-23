@@ -1,23 +1,42 @@
+// Grant Wehrli
+// mergesrort implementation
+
 import java.io.*;
 import java.util.*;
 
-public class FileToArray {
+public class MergeSortMain {
 
     public static void main(String[] args) {
+        System.out.println("Grant Wehrli");
         String filename = "100k.txt";
-        // get array from getArray
+        // get arrays from getArray
         System.out.println("Getting Arrays from file...");
-        int[] numbers = getArray(filename);
         int[] numbers2 = getArray(filename);
-        System.out.println("Bubble sorting...");
-        double elapsedMs_bubble = bubbleSort(numbers);
+
+        // call the sorting algo
         System.out.println("Merge sorting...");
-        double elapsedMs_merge = mergeSort(numbers2);
-        System.out.println("Time Comparisons:");
-        System.out.printf("bubble sort took %.3f ms%n", elapsedMs_bubble);
-        System.out.printf("merge sort took %.3f ms%n", elapsedMs_merge);
+        double elapsedMs_merge = mergeSort(numbers2); // keep call/signature the same; just don't print time
+
+        // print the sorted array
+        printArray(numbers2);
     }
 
+    /**
+     * Reads integers from a text file and returns them as an array.
+     * <p>
+     * Each line in the file is expected to contain one integer.
+     * The method attempts to parse each line into an integer and collects
+     * them into a list, which is then converted to an integer array.
+     * </p>
+     * <p>
+     * If the file cannot be read or a line contains an invalid number format,
+     * an error message is printed, and only successfully parsed integers are included
+     * in the returned array.
+     * </p>
+     *
+     * @param filename the path to the text file containing integers, one per line
+     * @return an array of integers read from the file
+     */
     public static int[] getArray(String filename) {
         List<Integer> numbersList = new ArrayList<>();
 
@@ -34,30 +53,28 @@ public class FileToArray {
 
         return numbersList.stream().mapToInt(Integer::intValue).toArray();
     }
+
+    /**
+     * Prints the given integer array to the console.
+     * 
+     * @param a the integer array to be sorted
+     */
     public static void printArray(int[] a) {
         for (int value : a) {
             System.out.println(value);
         }
     }
-    
-    public static double bubbleSort(int[] a) {
-        long start = System.nanoTime();
 
-        int n = a.length;
-        for (int i = n - 1; i >= 1; i--) {
-            for (int j = 0; j < i; j++) {
-                if (a[j] > a[j + 1]) {
-                    // swap a[j] and a[j+1]
-                    int t = a[j];
-                    a[j] = a[j + 1];
-                    a[j + 1] = t;
-                }
-            }
-        }
-        long end = System.nanoTime();
-        return (end - start) / 1_000_000.0; // return ms
-    }
-
+    /**
+     * Sorts the given integer array using the Merge Sort algorithm and measures the time taken.
+     * <p>
+     * Merge Sort is a divide-and-conquer algorithm that recursively splits the array into halves,
+     * sorts each half, and then merges them back together. The sorting is done in place (modifies the input array).
+     * </p>
+     *
+     * @param a the integer array to be sorted
+     * @return the time taken to perform the sort, in milliseconds
+     */
     public static double mergeSort(int[] a) {
         long start = System.nanoTime();
         int n = a.length;
@@ -69,6 +86,14 @@ public class FileToArray {
         
     }
 
+    /**
+     * Recursively divides the array into halves until subarrays of size 1 are reached,
+     * then calls the {@code merge} method to combine them in sorted order.
+     *
+     * @param arr   the array being sorted
+     * @param left  the starting index of the subarray
+     * @param right the ending index of the subarray
+     */
     private static void mergeRecursive(int[] arr, int left, int right) {
         // base case if the left index is greater than or equal to the right index (implies length of 1 or 0)
         if (left >= right) return;
@@ -87,6 +112,20 @@ public class FileToArray {
         merge(arr, left, right, mid);
 
     }
+
+    /**
+     * Merges two sorted subarrays of {@code arr} into a single sorted subarray.
+     * <p>
+     * The left subarray is defined as {@code arr[left .. mid]} and the right subarray
+     * is {@code arr[mid+1 .. right]}. This method assumes both subarrays are already sorted
+     * and combines them into a single sorted sequence in {@code arr}.
+     * </p>
+     * 
+     * @param arr   the array containing the subarrays to merge
+     * @param left  the starting index of the left subarray
+     * @param right the ending index of the right subarray
+     * @param mid   the index that splits the left and right subarrays
+     */
     private static void merge(int[] arr, int left, int right, int mid) {
         // get the lengths of the 2 subarrays
         int l_length = mid - left + 1;
@@ -144,7 +183,7 @@ public class FileToArray {
             i++;
             k++;
         }
-        while (i < r_length) {
+        while (j < r_length) {
             arr[k] = r_arr[j];
             j++;
             k++;
