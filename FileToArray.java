@@ -52,4 +52,28 @@ public class FileToArray {
         long end = System.nanoTime();
         return (end - start) / 1_000_000.0; // return ms
     }
+
+    public static double mergeSort(int[] a) {
+        long start = System.nanoTime();
+        int n = a.length;
+        int[] temp = new int[n];
+
+        mergeRecursive(a, 0, (n - 1), temp);
+       
+        long end = System.nanoTime();
+        return (end - start) / 1_000_000.0;
+        
+    }
+
+    private static void mergeRecursive(int[] a, int left, int right, int[] temp) {
+        // base case
+        if (left >= right) return;
+
+        
+
+        
+    }
+    private static void merge() {
+
+    }
 }
