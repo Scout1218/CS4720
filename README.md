@@ -41,7 +41,7 @@ Looking at the clock speed of my processor in task manager when I run the bubble
 n--------n^2-----estimated time (s)--estimated time (ms)
 1e1      1e2     2.3e-7s             0.00023ms           
 1e4      1e8     0.3s                300ms
-1e5      1e10    22.3s               22,300ms
+1e5      1e10    22.3s               22300ms
 
 Now the same thing for Merge Sort (instead of O(n^2) its O(n logn)):
 
@@ -51,9 +51,18 @@ n--------nlogn---------estimated time (s)--estimated time (ms)
 1e5      1660964.047   3.7e-3s             37ms
 
 
-Comparing this estimated time with the empirical data:
+Comparing this estimated time with the collected data:
 
-n-------estimate(@2.2GHz, ms)-----actual (~2.2GHz, ms)\
-1e1     
-1e4
-1e5
+Bubble
+n-------estimate------actual------difference---%difference
+1e1     0.00023ms     ~0.00233ms  +0.0021ms    +163.0%
+1e4     300ms         ~113.982ms  -186.018ms   -89.87%
+1e5     22300ms       ~11476.7ms  -10823.3ms   -64.09%
+
+Merge
+n-------estimate------actual------difference---%difference
+1e1     7.5e-5ms      ~0.00866ms  +0.0086ms    +196.6%
+1e4     3.0ms         ~2.517ms    -0.4830ms    -17.51%
+1e5     37ms          ~22.963ms   -14.037ms    -46.81%
+
+I think it would be fair to remove the n = 10 case, as the % differences are above 100%. So comparing the other values, the estimate is close enough to at least be the same power of 10 that I would consider it to closely follow the expected distributions.
