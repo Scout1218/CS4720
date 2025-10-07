@@ -3,13 +3,13 @@
 
 
 import java.io.*;
-import java.util.*;
+
 
 public class BubbleSortMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println("Grant Wehrli");
-        String filename = "100k.txt";
+        String filename = "random_numbers.txt";
         // get arrays from getArray
         System.out.println("Getting Arrays from file...");
         int[] numbers = getArray(filename);
@@ -25,35 +25,36 @@ public class BubbleSortMain {
     /**
      * Reads integers from a text file and returns them as an array.
      * <p>
-     * Each line in the file is expected to contain one integer.
-     * The method attempts to parse each line into an integer and collects
-     * them into a list, which is then converted to an integer array.
-     * </p>
-     * <p>
-     * If the file cannot be read or a line contains an invalid number format,
-     * an error message is printed, and only successfully parsed integers are included
-     * in the returned array.
+     * Each line in the file is expected to contain one integer. The method
+     * first counts the number of lines to determine the array size, then
+     * reads and parses each line into the array.
      * </p>
      *
      * @param filename the path to the text file containing integers, one per line
      * @return an array of integers read from the file
+     * @throws IOException if the file cannot be read
      */
-    public static int[] getArray(String filename) {
-        List<Integer> numbersList = new ArrayList<>();
-
+    public static int[] getArray(String filename) throws IOException {
+        // first pass counts the lines to create the array
+        int count = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                numbersList.add(Integer.parseInt(line.trim()));
+            while (br.readLine() != null) {
+                count++;
             }
-        } catch (IOException e) {
-            System.out.println("Error reading the file: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number format in file: " + e.getMessage());
         }
 
-        return numbersList.stream().mapToInt(Integer::intValue).toArray();
-    }
+        // allocate array based on count
+        int[] numbers = new int[count];
+
+        // read through the file, adding integers to the array
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            for (int i = 0; i < count; i++) {
+                numbers[i] = Integer.parseInt(br.readLine().trim());
+            }
+        }
+        // return the array
+        return numbers;
+    }   
 
     /**
      * Prints the given integer array to the console.
@@ -79,12 +80,15 @@ public class BubbleSortMain {
      */
     public static double bubbleSort(int[] a) {
         long start = System.nanoTime();
-
+        
         int n = a.length;
+        // loop through every element
         for (int i = n - 1; i >= 1; i--) {
+            // we have to compare every element every iteration
             for (int j = 0; j < i; j++) {
+                // if the current element is bigger than the next we swap
                 if (a[j] > a[j + 1]) {
-                    // swap a[j] and a[j+1]
+                    // swap a[j] and a[j+1] using temp var t
                     int t = a[j];
                     a[j] = a[j + 1];
                     a[j + 1] = t;
